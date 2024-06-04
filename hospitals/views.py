@@ -5,12 +5,15 @@ from .filters import HospitalFilter
 from django.shortcuts import get_object_or_404
 from .serialziers import (
     ClinicGetSerialzier,
-    HospitalGetSerializer
+    HospitalGetSerializer,
+    HospitalDetailSerializer,
+    DoctorGetSerialzier,
+    DoctorDetailSerialzier
 )
 from .models import (
     Clinic,
     Hospital,
-
+    Doctor
 )
 
 
@@ -60,3 +63,34 @@ class HospitalFilterListView(ListAPIView):
     permission_classes = [AllowAny]
     filter_backends = [DjangoFilterBackend]
     filterset_class = HospitalFilter
+
+
+class HospitalDetailView(RetrieveAPIView):
+    serializer_class = HospitalDetailSerializer
+    permission_classes = [AllowAny]
+
+    def get_object(self):
+        id = self.kwargs.get('hospital_id')
+        hospital = get_object_or_404(Hospital, id=id)
+        return hospital
+
+
+class DoctorListView(ListAPIView):
+    serializer_class = DoctorGetSerialzier
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        id = self.kwargs.get('hospital_id')
+        hospital = get_object_or_404(Hospital, id=id)
+        queryset = hospital.doctors.all()
+        return queryset
+
+
+class DoctorDetailView(RetrieveAPIView):
+    serializer_class = DoctorDetailSerialzier
+    permission_classes = [AllowAny]
+
+    def get_object(self):
+        id = self.kwargs.get('doctor_id')
+        doctor = get_object_or_404(Doctor, id=id)
+        return doctor

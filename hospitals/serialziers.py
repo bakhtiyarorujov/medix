@@ -77,3 +77,106 @@ class HospitalGetSerializer(serializers.ModelSerializer):
         if user.is_anonymous:
             return False
         return FavoriteHospital.objects.filter(user=user, hospitals=obj).exists()
+
+
+class HospitalDetailSerializer(serializers.ModelSerializer):
+    number_of_reviews = serializers.SerializerMethodField()
+    number_of_doctors = serializers.SerializerMethodField()
+    is_favorite = serializers.SerializerMethodField()
+    class Meta:
+        model = Hospital
+        fields = (
+            'id',
+            'name',
+            'price',
+            'cover',
+            'rooms',
+            'address',
+            'acreage',
+            'average_rating',
+            'number_of_reviews',
+            'number_of_doctors',
+            'is_favorite'
+        )
+    
+    def get_number_of_reviews(self, obj):
+        return obj.reviews.count()
+
+    def get_number_of_doctors(self, obj):
+        return obj.doctors.count()
+
+    def get_is_favorite(self, obj):
+        # Get the user from the context
+        user = self.context.get('request').user
+        if user.is_anonymous:
+            return False
+        return FavoriteHospital.objects.filter(user=user, hospitals=obj).exists()
+
+
+class DoctorGetSerialzier(serializers.ModelSerializer):
+    experience = serializers.SerializerMethodField(read_only=True)
+    field = serializers.CharField(source='field.name')
+    patients = serializers.SerializerMethodField(read_only=True)
+    reviews = serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        model = Doctor
+        fields = (
+            'id',
+            'title',
+            'cover',
+            'experience',
+            'field',
+            'average_rating',
+            'patients',
+            'reviews',
+        )
+    
+    def get_experience(self, obj):
+        return obj.experience()
+    
+    def get_patients(self, obj):
+        return obj.get_patients()
+    
+    def get_reviews(self, obj):
+        return obj.get_review_count()
+    
+
+class SpecialistSerialzier(serializers.ModelSerializer):
+    class Meta:
+        model=Specialist
+        fields = (
+            'id',
+            'name'
+        )
+
+
+class DoctorDetailSerialzier(serializers.ModelSerializer):
+    experience = serializers.SerializerMethodField(read_only=True)
+    field = serializers.CharField(source='field.name')
+    patients = serializers.SerializerMethodField(read_only=True)
+    reviews = serializers.SerializerMethodField(read_only=True)
+    specialist = SpecialistSerialzier(many=True)
+    class Meta:
+        model = Doctor
+        fields = (
+            'id',
+            'title',
+            'cover',
+            'experience',
+            'field',
+            'average_rating',
+            'patients',
+            'reviews',
+            'specialist',
+            'working_time',
+            'about'
+        )
+    
+    def get_experience(self, obj):
+        return obj.experience()
+    
+    def get_patients(self, obj):
+        return obj.get_patients()
+    
+    def get_reviews(self, obj):
+        return obj.get_review_count()

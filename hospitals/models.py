@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from datetime import datetime
 
 User = get_user_model()
 
@@ -97,7 +98,8 @@ class Doctor(models.Model):
     about = models.TextField()
     field = models.ForeignKey(Field, on_delete=models.CASCADE, related_name='doctors')
     specialist = models.ManyToManyField(Specialist, related_name='doctors')
-    average_rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
+    average_rating = models.DecimalField(max_digits=3, decimal_places=2, default=0)
+    graduated_year = models.PositiveIntegerField(null=True, blank=True)
     call_price = models.PositiveIntegerField()
     message_price = models.PositiveIntegerField()
     videocall_price = models.PositiveIntegerField()
@@ -105,6 +107,17 @@ class Doctor(models.Model):
     def __str__(self) -> str:
         return self.title
 
+    def experience(self):
+        result = datetime.now().year - self.graduated_year
+        return result
+ 
+    def get_patients(self):
+        result = self.appointments.count()
+        return result
+
+    def get_review_count(self):
+        result = self.reviews.count()
+        return result
 
 class DoctorReview(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='doctor_reviews')
