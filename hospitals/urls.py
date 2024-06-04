@@ -7,7 +7,8 @@ from .views import (
     HospitalFilterListView,
     HospitalDetailView,
     DoctorListView,
-    DoctorDetailView
+    DoctorDetailView,
+    DoctorSearchView
 )
 urlpatterns = [
     path('clinic/list', ClinicListView.as_view(), name='clinic_list'),
@@ -18,4 +19,5 @@ urlpatterns = [
     path('hospital/detail/<int:hospital_id>', HospitalDetailView.as_view(), name='hospital_detail'),
     path('doctor/list/<int:hospital_id>', DoctorListView.as_view(), name='doctor_list_by_hospital'),
     path('doctor/detail/<int:doctor_id>', DoctorDetailView.as_view(), name='doctor_detail'),
+    path('doctor/search/<str:keyword>', DoctorSearchView.as_view(), name='doctor_search'),
 ]

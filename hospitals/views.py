@@ -86,6 +86,16 @@ class DoctorListView(ListAPIView):
         return queryset
 
 
+class DoctorSearchView(ListAPIView):
+    serializer_class = DoctorGetSerialzier
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        keyword = self.kwargs.get('keyword')
+        queryset = Doctor.objects.filter(title__icontains=keyword)
+        return queryset
+
+
 class DoctorDetailView(RetrieveAPIView):
     serializer_class = DoctorDetailSerialzier
     permission_classes = [AllowAny]
