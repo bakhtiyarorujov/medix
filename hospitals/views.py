@@ -14,7 +14,8 @@ from .serialziers import (
 from .models import (
     Clinic,
     Hospital,
-    Doctor
+    Doctor,
+    City
 )
 
 
@@ -110,3 +111,4 @@ class DoctorDetailView(RetrieveAPIView):
 class CityListView(ListAPIView):
     serializer_class = CitySerializer
     permission_classes = [AllowAny]
+    queryset = City.objects.all()
