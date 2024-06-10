@@ -180,3 +180,12 @@ class DoctorDetailSerialzier(serializers.ModelSerializer):
     
     def get_reviews(self, obj):
         return obj.get_review_count()
+    
+
+class CitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = City
+        fields = (
+            'id',
+            'name'
+        )

@@ -8,7 +8,8 @@ from .serialziers import (
     HospitalGetSerializer,
     HospitalDetailSerializer,
     DoctorGetSerialzier,
-    DoctorDetailSerialzier
+    DoctorDetailSerialzier,
+    CitySerializer
 )
 from .models import (
     Clinic,
@@ -104,3 +105,8 @@ class DoctorDetailView(RetrieveAPIView):
         id = self.kwargs.get('doctor_id')
         doctor = get_object_or_404(Doctor, id=id)
         return doctor
+    
+
+class CityListView(ListAPIView):
+    serializer_class = CitySerializer
+    permission_classes = [AllowAny]
