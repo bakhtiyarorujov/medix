@@ -9,7 +9,16 @@ from .views import (
     DoctorListView,
     DoctorDetailView,
     DoctorSearchView,
-    CityListView
+    CityListView,
+    AppointmentCreateView,
+    PatientListView,
+    PatientCreateView,
+    PatientDetailView,
+    ApointmentTypesListView,
+    BloodListView,
+    GenderListView,
+    ApointmentListView,
+    ApointmentDetailView
 )
 urlpatterns = [
     path('clinic/list', ClinicListView.as_view(), name='clinic_list'),
@@ -22,4 +31,13 @@ urlpatterns = [
     path('doctor/list/<int:hospital_id>', DoctorListView.as_view(), name='doctor_list_by_hospital'),
     path('doctor/detail/<int:doctor_id>', DoctorDetailView.as_view(), name='doctor_detail'),
     path('doctor/search/<str:keyword>', DoctorSearchView.as_view(), name='doctor_search'),
+    path('appointment/create', AppointmentCreateView.as_view(), name='apointment_create'),
+    path('appointment/type/list', ApointmentTypesListView.as_view(), name='apointment_type_list'),
+    path('appointment/list', ApointmentListView.as_view(), name='apointment_list'),
+    path('appointment/detail/<int:id>', ApointmentDetailView.as_view(), name='apointment_detail'),
+    path('patient/list', PatientListView.as_view(), name='patient_list'),
+    path('patient/blood/list', BloodListView.as_view(), name='blood_list'),
+    path('patient/gender/list', GenderListView.as_view(), name='gender_list'),
+    path('patient/create', PatientCreateView.as_view(), name='patient_create'),
+    path('patient/detail/<int:patient_id>', PatientDetailView.as_view(), name='patient_detail'),
 ]

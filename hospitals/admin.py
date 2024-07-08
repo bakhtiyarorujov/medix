@@ -74,8 +74,8 @@ class HospitalReviewAdmin(admin.ModelAdmin):
 
 @admin.register(Doctor)
 class DoctorAdmin(admin.ModelAdmin):
-    list_display = ['title', 'field', 'hospital', 'average_rating', 'call_price', 'message_price', 'videocall_price']
-    list_display_links = ['title', 'field', 'hospital', 'average_rating', 'call_price', 'message_price', 'videocall_price']
+    list_display = ['title', 'field', 'hospital', 'average_rating']
+    list_display_links = ['title', 'field', 'hospital', 'average_rating']
 
 
 @admin.register(DoctorReview)

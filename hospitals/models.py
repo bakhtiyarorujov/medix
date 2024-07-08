@@ -100,9 +100,6 @@ class Doctor(models.Model):
     specialist = models.ManyToManyField(Specialist, related_name='doctors')
     average_rating = models.DecimalField(max_digits=3, decimal_places=2, default=0)
     graduated_year = models.PositiveIntegerField(null=True, blank=True)
-    call_price = models.PositiveIntegerField()
-    message_price = models.PositiveIntegerField()
-    videocall_price = models.PositiveIntegerField()
 
     def __str__(self) -> str:
         return self.title
@@ -119,6 +116,7 @@ class Doctor(models.Model):
         result = self.reviews.count()
         return result
 
+
 class DoctorReview(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='doctor_reviews')
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='reviews')
@@ -130,7 +128,9 @@ class DoctorReview(models.Model):
 
 
 class ApointmentTypes(models.Model):
+    hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name='appointmenttypes')
     name = models.CharField(max_length=20)
+    price = models.PositiveIntegerField()
 
     def __str__(self) -> str:
         return self.name
@@ -154,6 +154,7 @@ class Patient(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='patients')
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
+    tag = models.CharField(max_length=100, null=True, blank=True)
     birthday = models.DateField()
     phone = models.CharField(max_length=15)
     gender = models.ForeignKey(Gender, on_delete=models.CASCADE, related_name='patients')
@@ -165,6 +166,7 @@ class Patient(models.Model):
 
 
 class Apointment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='appointments')
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='appointments')
     time = models.DateField()
     price = models.PositiveIntegerField(null=True, blank=True)

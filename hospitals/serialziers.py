@@ -189,3 +189,99 @@ class CitySerializer(serializers.ModelSerializer):
             'id',
             'name'
         )
+
+
+class PatientGetSerializer(serializers.ModelSerializer):
+    gender = serializers.CharField(source='gender.name')
+    blood = serializers.CharField(source='blood.name')
+    class Meta:
+        model = Patient
+        fields = (
+            'id',
+            'first_name',
+            'last_name',
+            'tag',
+            'birthday',
+            'phone',
+            'gender',
+            'blood',
+            'profile_photo'
+        )
+
+
+class PatientCreateSerialzier(serializers.ModelSerializer):
+    class Meta:
+        model = Patient
+        fields = (
+            'first_name',
+            'last_name',
+            'birthday',
+            'tag',
+            'phone',
+            'gender',
+            'blood',
+            'profile_photo'
+        ) 
+    def validate(self, attrs):
+        attrs['user'] = self.context['request'].user
+        return super().validate(attrs)
+
+
+class BloodlistSerialzier(serializers.ModelSerializer):
+    class Meta:
+        model = Blood
+        fields = (
+            'id',
+            'name'
+        )
+
+
+class GenderlistSerialzier(serializers.ModelSerializer):
+    class Meta:
+        model = Gender
+        fields = (
+            'id',
+            'name'
+        )
+
+
+class AppointmentTypeslistSerialzier(serializers.ModelSerializer):
+    class Meta:
+        model = ApointmentTypes
+        fields = (
+            'id',
+            'name',
+            'price'
+        )
+
+
+class AppointmentCreateSerialzier(serializers.ModelSerializer):
+    class Meta:
+        model = Apointment
+        fields = (
+            'doctor',
+            'time',
+            'apointment_type',
+            'patient'
+        ) 
+    def validate(self, attrs):
+        type = attrs['appointment_type']
+        attrs['price'] = type.price
+        attrs['user'] = self.context['request']
+        return super().validate(attrs)
+
+
+class AppointmentGetSerialzier(serializers.ModelSerializer):
+    doctor = DoctorGetSerialzier()
+    apointment_type = serializers.CharField(source='apointment_type.name')
+    patient = PatientGetSerializer()
+    class Meta:
+        model = Apointment
+        fields = (
+            'id',
+            'doctor',
+            'time',
+            'price',
+            'apointment_type',
+            'patient'
+        )

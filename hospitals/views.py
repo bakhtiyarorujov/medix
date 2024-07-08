@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import HospitalFilter
@@ -9,13 +9,25 @@ from .serialziers import (
     HospitalDetailSerializer,
     DoctorGetSerialzier,
     DoctorDetailSerialzier,
-    CitySerializer
+    CitySerializer,
+    PatientGetSerializer,
+    PatientCreateSerialzier,
+    AppointmentCreateSerialzier,
+    BloodlistSerialzier,
+    GenderlistSerialzier,
+    AppointmentTypeslistSerialzier,
+    AppointmentGetSerialzier
 )
 from .models import (
     Clinic,
     Hospital,
     Doctor,
-    City
+    City,
+    Patient,
+    Blood,
+    Gender,
+    ApointmentTypes,
+    Apointment
 )
 
 
@@ -112,3 +124,70 @@ class CityListView(ListAPIView):
     serializer_class = CitySerializer
     permission_classes = [AllowAny]
     queryset = City.objects.all()
+
+
+class PatientListView(ListAPIView):
+    serializer_class = PatientGetSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        patients = user.patients.all()
+        return patients
+
+
+class PatientCreateView(CreateAPIView):
+    serializer_class = PatientCreateSerialzier
+    permission_classes = [IsAuthenticated]
+
+
+class PatientDetailView(RetrieveAPIView):
+    serializer_class = PatientGetSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        id = self.kwargs.get('patient_id')
+        patient = get_object_or_404(Patient, id=id)
+        return patient
+
+
+class BloodListView(ListAPIView):
+    serializer_class = BloodlistSerialzier
+    permission_classes = [AllowAny]
+    queryset = Blood.objects.all()
+
+
+class GenderListView(ListAPIView):
+    serializer_class = GenderlistSerialzier
+    permission_classes = [AllowAny]
+    queryset = Gender.objects.all()
+
+
+class ApointmentTypesListView(ListAPIView):
+    serializer_class = AppointmentTypeslistSerialzier
+    permission_classes = [AllowAny]
+    queryset = ApointmentTypes.objects.all()
+
+
+class AppointmentCreateView(CreateAPIView):
+    serializer_class = AppointmentCreateSerialzier
+    permission_classes = [IsAuthenticated]
+
+
+class ApointmentListView(ListAPIView):
+    serializer_class = AppointmentGetSerialzier
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = user.appointments.all()
+        return queryset
+    
+class ApointmentDetailView(RetrieveAPIView):
+    serializer_class = AppointmentGetSerialzier
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        id = self.kwargs.get('id')
+        apointment = get_object_or_404(Apointment, id=id)
+        return apointment
