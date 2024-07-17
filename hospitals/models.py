@@ -127,8 +127,17 @@ class DoctorReview(models.Model):
         return self.user
 
 
+class AppointmentTypeIcon(models.Model):
+    icon = models.ImageField(upload_to='apointment_type_icon')
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+    
+
 class ApointmentTypes(models.Model):
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name='appointmenttypes')
+    icon = models.ForeignKey(AppointmentTypeIcon, on_delete=models.SET_NULL, null=True, blank=True, related_name='types')
     name = models.CharField(max_length=20)
     price = models.PositiveIntegerField()
 

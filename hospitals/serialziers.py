@@ -246,11 +246,13 @@ class GenderlistSerialzier(serializers.ModelSerializer):
 
 
 class AppointmentTypeslistSerialzier(serializers.ModelSerializer):
+    icon = serializers.ImageField(source='icon.icon')
     class Meta:
         model = ApointmentTypes
         fields = (
             'id',
             'name',
+            'icon',
             'price'
         )
 

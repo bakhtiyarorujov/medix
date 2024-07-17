@@ -17,7 +17,8 @@ from . models import (
     Patient,
     Apointment,
     FavoriteDoctor,
-    FavoriteHospital
+    FavoriteHospital,
+    AppointmentTypeIcon
 )
 # Register your models here.
 
@@ -122,3 +123,6 @@ class FavoriteHospitalAdmin(admin.ModelAdmin):
 @admin.register(FavoriteDoctor)
 class FavoriteDoctorAdmin(admin.ModelAdmin):
     list_display = ['user']
+
+
+admin.site.register(AppointmentTypeIcon)

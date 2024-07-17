@@ -168,6 +168,12 @@ class ApointmentTypesListView(ListAPIView):
     permission_classes = [AllowAny]
     queryset = ApointmentTypes.objects.all()
 
+    def get_queryset(self):
+        id = self.kwargs.get('doctor_id')
+        doctor = get_object_or_404(Doctor, id=id)
+        queryset = doctor.hospital.appointmenttypes.all()
+        return queryset
+
 
 class AppointmentCreateView(CreateAPIView):
     serializer_class = AppointmentCreateSerialzier
