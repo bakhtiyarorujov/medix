@@ -71,6 +71,7 @@ class Hospital(models.Model):
     acreage = models.PositiveIntegerField()
     clinic = models.ManyToManyField(Clinic, related_name='hospitals')
     address = models.CharField(max_length=200)
+    description = models.TextField(null=True, blank=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='hospitals', null=True, blank=True)
     longitude = models.DecimalField(max_digits=10, decimal_places=7, null=True, blank=True)
     lattitude = models.DecimalField(max_digits=10, decimal_places=7, null=True, blank=True)
@@ -180,7 +181,7 @@ class Apointment(models.Model):
     time = models.DateField()
     price = models.PositiveIntegerField(null=True, blank=True)
     apointment_type = models.ForeignKey(ApointmentTypes, on_delete=models.CASCADE, related_name='appointments')
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='appointments')
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='appointments', null=True, blank=True)
 
     def __str__(self) -> str:
         return self.doctor
