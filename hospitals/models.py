@@ -184,7 +184,7 @@ class Apointment(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='appointments', null=True, blank=True)
 
     def __str__(self) -> str:
-        return self.doctor
+        return f'{self.doctor} {self.time}'
     
 
 class FavoriteDoctor(models.Model): 

@@ -269,9 +269,9 @@ class AppointmentCreateSerialzier(serializers.ModelSerializer):
             'patient'
         ) 
     def validate(self, attrs):
-        type = attrs['appointment_type']
+        type = attrs['apointment_type']
         attrs['price'] = type.price
-        attrs['user'] = self.context['request']
+        attrs['user'] = self.context['request'].user
         return super().validate(attrs)
 
 
